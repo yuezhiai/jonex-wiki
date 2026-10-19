@@ -37,6 +37,7 @@ dependencies = [
 [project.optional-dependencies]
 test = ["pytest>=8", "pytest-asyncio>=0.23"]
 [project.scripts]
+jonex-wiki = "jonex_wiki.cli:main"
 jonex-wiki-api = "jonex_wiki.main:run"
 jonex-wiki-backfill = "jonex_wiki.backfill:main"
 [build-system]

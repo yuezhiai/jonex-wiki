@@ -34,6 +34,7 @@ Jonex Wiki 是一个独立的 **LLM-Wiki** 服务：把文档解析成结构化�
 - **异步任务**：上传、解析、编译、查询都是任务，支持轮询、取消与中断恢复。
 - **可部署**：本地 SQLite 快速体验；生产可用 PostgreSQL，单实例互斥锁 + bundle GC。
 - **OpenAI-compatible**：LLM 接入任意兼容 `chat/completions` 的服务；MinerU 可用云端或自托管。
+- **CLI**：`jonex-wiki` 封装上传、编译、查询、任务与页面读取，可直接脚本化。
 
 ## 快速开始
 
@@ -64,7 +65,7 @@ cp .env.example .env
 本地最小配置（SQLite + 任意 OpenAI-compatible LLM）：
 
 ```dotenv
-JONEX_WIKI_API_KEY=dev-secret
+JONEX_WIKI_API_KEY=change-me
 DATABASE_URL=sqlite+aiosqlite:///./jonex_wiki.db
 JONEX_WIKI_DATA_ROOT=./.results
 
@@ -112,7 +113,7 @@ curl http://127.0.0.1:8007/healthz
 
 ```bash
 curl -X POST http://127.0.0.1:8007/api/v1/kbs/demo/documents \
-  -H "X-API-Key: dev-secret" \
+  -H "X-API-Key: change-me" \
   -H "X-Tenant-ID: demo" \
   -F "file=@README.md;filename=readme.md"
 # {"task_id":"...","document_id":"...","status":"queued"}
@@ -122,7 +123,7 @@ curl -X POST http://127.0.0.1:8007/api/v1/kbs/demo/documents \
 
 ```bash
 curl http://127.0.0.1:8007/api/v1/tasks/<task_id> \
-  -H "X-API-Key: dev-secret" \
+  -H "X-API-Key: change-me" \
   -H "X-Tenant-ID: demo"
 ```
 
@@ -130,7 +131,7 @@ curl http://127.0.0.1:8007/api/v1/tasks/<task_id> \
 
 ```bash
 curl -X POST http://127.0.0.1:8007/api/v1/kbs/demo/compile \
-  -H "X-API-Key: dev-secret" \
+  -H "X-API-Key: change-me" \
   -H "X-Tenant-ID: demo"
 ```
 
@@ -138,7 +139,7 @@ curl -X POST http://127.0.0.1:8007/api/v1/kbs/demo/compile \
 
 ```bash
 curl -X POST http://127.0.0.1:8007/api/v1/kbs/demo/query \
-  -H "X-API-Key: dev-secret" \
+  -H "X-API-Key: change-me" \
   -H "X-Tenant-ID: demo" \
   -H "Content-Type: application/json" \
   -d '{"question":"这个项目是做什么的？"}'
@@ -146,6 +147,49 @@ curl -X POST http://127.0.0.1:8007/api/v1/kbs/demo/query \
 ```
 
 轮询同一个任务接口，`status=done` 后 `result` 中会包含 `answer` 与 `citations`。
+
+## CLI
+
+`jonex-wiki` 是 API-backed CLI：它不直接读写引擎数据库，只调用已启动的服务。先运行
+`jonex-wiki-api`，再配置连接信息：
+
+```bash
+export JONEX_WIKI_BASE_URL=http://127.0.0.1:8007
+export JONEX_WIKI_API_KEY=change-me       # 与服务端 JONEX_WIKI_API_KEY 一致
+export JONEX_WIKI_TENANT_ID=demo
+```
+
+常用命令：
+
+```bash
+# 健康检查
+jonex-wiki status
+
+# 上传 + 等待解析 + 等待自动触发的编译（一条命令走完入库）
+jonex-wiki upload ./README.md --kb demo --wait --compile
+
+# 只等待编译；如果解析已自动排了编译，会复用同一个任务
+jonex-wiki compile --kb demo --wait
+
+# 提问并等待答案；默认 fast，可换 standard/deep
+jonex-wiki query "这个项目是做什么的？" --kb demo
+jonex-wiki query "..." --kb demo --thinking-mode deep --no-wait
+
+# 查看任务、页面
+jonex-wiki task qry-xxxxxxxx
+jonex-wiki task task-xxxxxxxx --wait
+jonex-wiki pages --kb demo
+```
+
+所有命令都支持 `--json`，适合脚本消费；连接参数既可放在子命令前，也可放在子命令后：
+
+```bash
+jonex-wiki --json pages --kb demo
+jonex-wiki pages --kb demo --json
+```
+
+`upload` 的 `--compile` 会等待解析任务结束后，再等待解析器自动排入的编译任务；如果
+没有发现自动编译任务，会提示手动执行 `jonex-wiki compile --kb ... --wait`。
 
 ## Docker
 
