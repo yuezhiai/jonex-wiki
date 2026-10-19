@@ -1,0 +1,12 @@
+services:
+  api:
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_URL: sqlite+aiosqlite:////data/jonex-wiki/jonex_wiki.db
+      JONEX_WIKI_DATA_ROOT: /data/jonex-wiki
+      JONEX_WIKI_INPUT_ROOT: /app/inputs
+    ports: ["8007:8007"]
+    volumes: [data:/data/jonex-wiki]
+    restart: unless-stopped
+volumes: {data: {}}

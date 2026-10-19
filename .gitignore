@@ -1,0 +1,19 @@
+.env
+.env.*
+!.env.example
+
+# Runtime artifacts
+.results/
+logs/
+__pycache__/
+*.pyc
+.venv
+src/jonex_wiki.egg-info
+.vscode
+.pytest_cache
+.ruff_cache
+.coverage
+htmlcov/
+dist/
+build/
+.task*
