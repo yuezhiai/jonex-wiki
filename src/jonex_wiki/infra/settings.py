@@ -53,7 +53,7 @@ class Settings(BaseSettings):
     # core 的 QUERY_LLM_RERANK → query_rerank(现有字段,只做读点映射)
     query_rerank: bool = Field(default=False, validation_alias="QUERY_RERANK")
     # query_tasks 终态行保留时长(秒)。done/failed/cancelled 且 finished_at 早于该窗口的
-    # 行由启动 GC 清除,防 query_tasks 无界增长(方案 §6.4)。
+    # 行由启动 GC 清除,防 query_tasks 无界增长(设计)。
     query_task_ttl_seconds: int = 7 * 24 * 3600
     # 成本闸门
     compile_max_documents: int = 1000
@@ -78,7 +78,7 @@ class Settings(BaseSettings):
     mineru_api_base_url: str = Field(default="https://mineru.net", validation_alias="MINERU_API_BASE_URL")
     mineru_poll_interval: float = Field(default=5.0, validation_alias="MINERU_POLL_INTERVAL")
     mineru_poll_timeout: float = Field(default=1800.0, validation_alias="MINERU_POLL_TIMEOUT")
-    # MinerU(§15 收敛新增,不带前缀,显式 alias)
+    # MinerU(收敛新增,不带前缀,显式 alias)
     mineru_model_version: str = Field(default="vlm", validation_alias="MINERU_MODEL_VERSION")
     mineru_local_backend: str = Field(default="pipeline", validation_alias="MINERU_LOCAL_BACKEND")
     mineru_parse_max_retries: int = Field(default=3, validation_alias="MINERU_PARSE_MAX_RETRIES")
@@ -96,7 +96,7 @@ class Settings(BaseSettings):
     db_schema: str = Field(default="jonex_wiki", validation_alias="DB_SCHEMA")
     database_url_override: str = Field(default="", validation_alias="DATABASE_URL")
 
-    # ── §15 配置治理:core 引擎旋钮收敛进 Settings(唯一权威) ──
+    # ── 配置治理:引擎旋钮收敛进 Settings(唯一权威) ──
     # compile + semantic review
     compile_output_tokens: int = 16384
     semantic_review_output_tokens: int = 4096
@@ -280,7 +280,7 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def _require_secrets(self):
-        """spec §7.1/§12.3:缺认证/网关配置拒绝启动(fail-fast)。"""
+        """设计要求:缺认证/网关配置拒绝启动(fail-fast)。"""
         if not self.api_key:
             raise ValueError("JONEX_WIKI_API_KEY 未配置,拒绝启动")
         if not self.llm_binding_host or not self.llm_binding_api_key:

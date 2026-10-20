@@ -1,7 +1,7 @@
 """AC-007 Error Book lifecycle and bounded repair.
 
 This module owns batch numbering, Error Book persistence and one bounded repair
-round on top of the accepted Algorithm 1 batch runner (AC-006), composing the
+round on top of the accepted Algorithm 1 batch runner, composing the
 paper pipeline as::
 
     compile batch -> discover errors -> attribute new errors
@@ -92,7 +92,7 @@ def classify_error_class(category: str, code: str) -> str:
     ):
         return "Transient"
     if category == "coverage_gap":
-        # S4.3: a confirmed compile omission is reported, never publish-blocking,
+        # a confirmed compile omission is reported, never publish-blocking,
         # and never part of the global blocking repair loop.
         return "Advisory"
     if category == "dangling_link":
@@ -310,7 +310,7 @@ class ErrorBookEntry(BaseModel):
     affected_passage_ids: List[str] = Field(default_factory=list)
     rule_version: Optional[str] = None
     source_versions: Dict[str, str] = Field(default_factory=dict)
-    # S4.3: the exact binding of a confirmed compile omission - the source range
+    # the exact binding of a confirmed compile omission - the source range
     # it is about and the content version it was confirmed against.
     omission_range: List[int] = Field(default_factory=list)
     omission_source_sha256: str = ""
@@ -487,7 +487,7 @@ class FinalizationResult(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 # ──────────────────────────────────────────────
-#  Request construction (AC-006 conventions)
+# Request construction (conventions)
 # ──────────────────────────────────────────────
 
 
@@ -1121,7 +1121,7 @@ async def run_compiler_batch(
 
     Raises ``ValueError`` for an out-of-range ``repair_interval`` before any
     model call.  The wrapper returns the incremented state even when Algorithm 1
-    halted; rejected proposal changes remain absent exactly as AC-006 specifies.
+    halted; rejected proposal changes remain absent exactly as the design specifies.
 
     ``defer_repair`` suppresses this batch's bounded repair round so a caller
     running parallel batches can merge them first and run a single repair round

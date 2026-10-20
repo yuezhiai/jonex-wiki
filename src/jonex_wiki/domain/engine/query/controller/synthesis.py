@@ -175,7 +175,7 @@ def build_synthesis_boundary(
 ) -> SynthesisBoundary:
     """Build the fresh two-message boundary from active evidence only.
 
-    ``read_views`` (§7) are the verifiable article ranges delivered by the
+    ``read_views`` are the verifiable article ranges delivered by the
     reading repair.  They are exposed to the model as a deduplicated
     ``source_reading_context`` and are never turned into fake evidence handles;
     any reading context without a matching active-evidence handle is reported
@@ -243,7 +243,7 @@ def build_synthesis_boundary(
         payload["table_requests"] = list(table_request_views)
     reading_context, coverage_gap = _reading_context_payload(read_views)
     if reading_context:
-        # §7: article context is shown by source/range, never converted into a
+        # article context is shown by source/range, never converted into a
         # new bracketed handle.  A full article's extra context may have no
         # citable evidence, so the gap is reported rather than fabricated.
         payload["source_reading_context"] = reading_context
@@ -269,7 +269,7 @@ def build_synthesis_boundary(
 
 
 def _reading_context_payload(read_views: Sequence[dict]) -> Tuple[list, list]:
-    """Deduplicate reading views into model context plus coverage gaps (§7)."""
+    """Deduplicate reading views into model context plus coverage gaps."""
     context: List[Dict[str, Any]] = []
     gaps: List[Dict[str, Any]] = []
     seen: set = set()

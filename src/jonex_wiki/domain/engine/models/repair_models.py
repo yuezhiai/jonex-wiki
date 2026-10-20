@@ -1,6 +1,6 @@
-"""Shared compile DTOs for AC-006 (lwp-arch-001 ALG1).
+"""Shared compile DTOs.
 
-Extracted verbatim from ``engines/llm_wiki_plus/algorithm1.py``: the public
+Extracted verbatim from ``原引擎/algorithm1.py``: the public
 model contracts used by candidate selection, mutation planning and batch
 acceptance.  The old import path stays available through the re-export shim;
 public field names and validation semantics are unchanged.

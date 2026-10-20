@@ -7,7 +7,7 @@ injected mapping when ``runtime_environment(...)`` is active (the production
 path — dev runners inject ``settings.runtime_env()``).
 
 This lives in ``kernel`` (not ``domain``) so the ``os.environ`` reference stays
-out of ``domain/``/``adapters/``, satisfying the §15 convergence grep.
+out of ``domain/``/``adapters/``, satisfying the convergence grep.
 """
 
 from __future__ import annotations

@@ -13,7 +13,7 @@ from jonex_wiki.storage.repos import QueryTaskRepo
 from jonex_wiki.storage.layout import Layout
 
 log = logging.getLogger(__name__)
-_ADVISORY_KEY = 730203  # 固定 app 级锁 key(spec §8)
+_ADVISORY_KEY = 730203  # 固定 app 级锁 key(设计要求)
 
 
 class TaskExecutor:
@@ -170,7 +170,7 @@ class TaskExecutor:
                 "task_ids": [row.task_id for row in rows]}
 
     async def _run_query(self, row: QueryTaskRow, *, thinking_mode: str | None = None) -> None:
-        """后台查询生命周期(§6.3/§6.4):queued→running→done/failed/cancelled。
+        """后台查询生命周期:queued→running→done/failed/cancelled。
 
         query_tasks 只读高频、无 stage 恢复重放;不落 tasks 表。
         """
@@ -230,7 +230,7 @@ class TaskExecutor:
             row.result = result
 
     async def set_stage(self, task_id: str, stage: str, *, summary: dict | None = None) -> None:
-        """供 runner 更新细粒度阶段(spec §3.3/§8);自开短 session。"""
+        """供 runner 更新细粒度阶段(设计要求);自开短 session。"""
         async with self.session_factory() as s:
             row = await s.get(TaskRow, task_id)
         if row is not None and row.kind == TaskKind.compile.value:
@@ -287,7 +287,7 @@ class TaskExecutor:
                 flag.set()
             task = self._running_tasks.get(task_id)
             if task is not None:
-                task.cancel()   # 触发 CancelledError → _run 转 cancelled(spec §8 协作式取消)
+                task.cancel()   # 触发 CancelledError → _run 转 cancelled(设计要求 协作式取消)
         await session.commit()
         return row
 
@@ -331,12 +331,12 @@ class TaskExecutor:
             await s.commit()
 
     def check_cancel(self, task_id: str) -> None:
-        """domain 层检查点:spec §8——编译在分配批次与页面任务边界、解析在轮询之间调用。"""
+        """domain 层检查点:设计要求——编译在分配批次与页面任务边界、解析在轮询之间调用。"""
         if self.is_cancelled(task_id):
             raise asyncio.CancelledError()
 
     async def recover(self, session: AsyncSession) -> None:
-        """spec §3.3 启动恢复:中断态标记 failed(interrupted);queued 重新入队。"""
+        """设计要求 启动恢复:中断态标记 failed(interrupted);queued 重新入队。"""
         rows = (await session.execute(select(TaskRow))).scalars().all()
         requeue: list[TaskRow] = []
         for row in rows:

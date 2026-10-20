@@ -1,6 +1,6 @@
-"""Retrieval / tokenizer core for the wiki query engine (lwp-arch-001 QA-1).
+"""Retrieval / tokenizer core for the wiki query engine.
 
-Extracted verbatim from ``engines/llm_wiki_plus/query_algorithm.py``: the
+Extracted verbatim from ``原引擎/query_algorithm.py``: the
 FTS5 index over knowledge pages, BM25 lexical search, snippet and
 passage machinery, deterministic query decomposition markers, and the
 query-corpus builder.  Pure with respect to the environment: only ``ModelPort``
@@ -1026,7 +1026,7 @@ def _fts_search(
 def derive_page_number_map(
     state: CompilerState, claims: List[ValidatedClaim]
 ) -> Dict[str, int]:
-    """LWP-RET-002 D-5: derive ``page_path -> page_number`` query-side.
+    """derive ``page_path -> page_number`` query-side.
 
     PageIndexEntry is frozen and gains no field; the page number is read from
     the archived passage ``source_metadata`` at query time and surfaced as an
@@ -1055,7 +1055,7 @@ def derive_page_number_map(
 def _chapter_tree_hits(
     corpus: QueryCorpus, question: str, limit: int = 5
 ) -> List[SearchHit]:
-    """LWP-RET-002 chapter_tree route: navigation hits over the render tree.
+    """chapter_tree route: navigation hits over the render tree.
 
     Surfaces knowledge pages (chapter pages) derived from the wiki render tree
     plus the query-side page-number map: pages whose title / description /
@@ -2550,7 +2550,7 @@ def _build_query_corpus_legacy(
     # just to prove two representations were equal.
     page_text = {path: files[path] for path in grounded_index}
 
-    # LWP-RET-002 D-5: page_number derived query-side from the original state's
+    # page_number derived query-side from the original state's
     # source_metadata as an independent map (PageIndexEntry stays frozen).
     page_number_map = derive_page_number_map(state, claims)
 

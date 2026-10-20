@@ -1,6 +1,6 @@
-"""Synthesis, citation and answer-compaction helpers (lwp-arch-001 QA-4).
+"""Synthesis, citation and answer-compaction helpers.
 
-Extracted verbatim from ``engines/llm_wiki_plus/query_algorithm.py``: the
+Extracted verbatim from ``原引擎/query_algorithm.py``: the
 final-answer synthesis (``_synthesize_active_evidence``,
 ``_call_clean_synthesis``, ``_resolve_synthesis_response``), deterministic
 citation verification (``_citation_matches``,
@@ -269,7 +269,7 @@ def _finish_controller_with_citations(
     query_state: EvidenceQueryState = state["query_state"]
     # Handles are numbered over the append-only delivered-material ledger, not
     # the bounded active window, so a citation resolved from the full registry
-    # (READING-REPAIR §1) binds to the same [E#] here.
+    # (既有实现) binds to the same [E#] here.
     ordered_ids = query_state.seen_evidence_order
     records_by_id = query_state.seen_evidence_by_id
     runtime: ControllerRuntime = state["controller"]
@@ -307,7 +307,7 @@ def _finish_controller_with_citations(
         return False
 
     # Deferred import: ``_publish_control_transition`` stays on the legacy
-    # shim (controller responsibility, split in QA-3) — resolving it at call
+    # shim (controller responsibility, split in) — resolving it at call
     # time uses the same seam as evidence_state._record_query_state_event, so a
     # monkeypatch of the shim name stays effective on both publish call sites.
     from jonex_wiki.domain.engine.query.algorithm import (
@@ -661,7 +661,7 @@ async def _call_clean_synthesis(
 
 
 def _reading_context_payload(read_views: Sequence[dict]) -> Tuple[list, list]:
-    """Deduplicate reading views into model context plus coverage gaps (§7)."""
+    """Deduplicate reading views into model context plus coverage gaps."""
 
     context: List[Dict[str, Any]] = []
     gaps: List[Dict[str, Any]] = []
@@ -810,7 +810,7 @@ def _selected_reading_context(
 ) -> List[dict]:
     """Keep only the already-read ranges the model's draft actually cited.
 
-    READING-REPAIR-MAINLINE §6: the same query model chooses the material its
+    既有主线: the same query model chooses the material its
     answer needs; the final boundary carries those ranges, not every range the
     run ever delivered.  When the model left no citation identity, the legacy
     whole-set behaviour is preserved.
@@ -1171,7 +1171,7 @@ async def _synthesize_active_evidence(
         return answer, citations, bool(incomplete or invalid or not answer.strip())
 
     if preserve_answer is not None:
-        # READING-REPAIR §1: the traversal model submitted BOTH the answer and
+        # 既有实现: the traversal model submitted BOTH the answer and
         # its citations in the same final action.  Validate those citations
         # against everything actually delivered and return the answer verbatim.
         # No post-hoc re-solve, citation-extraction call, or table takeover runs

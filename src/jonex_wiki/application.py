@@ -96,7 +96,7 @@ class WikiApplication:
         if settings is None:
             return
         if settings.database_url.startswith("postgresql"):
-            # 单实例强制(spec §8):专用连接全程持有 session 级 advisory lock。
+            # 单实例强制(设计要求):专用连接全程持有 session 级 advisory lock。
             from sqlalchemy.ext.asyncio import create_async_engine
             from sqlalchemy.pool import NullPool
             self._lock_engine = create_async_engine(settings.database_url, poolclass=NullPool)
@@ -109,7 +109,7 @@ class WikiApplication:
             if not got:
                 await conn.close()
                 await self._lock_engine.dispose()
-                raise SystemExit("另一个实例已持有执行锁,拒绝启动(spec §8 单实例强制)")
+                raise SystemExit("另一个实例已持有执行锁,拒绝启动(设计要求 单实例强制)")
             self._lock_conn = conn
         if self.session_factory is None:
             from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
@@ -156,7 +156,7 @@ class WikiApplication:
             self.session_factory, settings, self.layout, self.gw, executor=self.executor)
         self.executor.outline_runner = self.executor.outline_runner or build_outline_runner(
             self.session_factory, settings, self.layout, self.gw)
-        # 启动恢复(spec §3.3)
+        # 启动恢复(设计要求)
         async with self.session_factory() as s:
             await self.executor.recover(s)
             await self.executor.recover_queries(s)
@@ -177,7 +177,7 @@ class WikiApplication:
                     QueryTaskRow.bundle_sha.isnot(None),
                 ))).scalars())
             self.layout.prune_versions(tenant_id, kb_id, settings.keep_bundles, pins)
-        # FTS5 启动自检(spec §13)
+        # FTS5 启动自检(设计要求)
         import sqlite3 as _sq
         try:
             probe = _sq.connect(":memory:")

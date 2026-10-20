@@ -1,4 +1,4 @@
-"""Source understanding, separated from page organization (S7.1).
+"""Source understanding, separated from page organization.
 
 The legacy compile chain asks one model, once per passage, to *both* decide
 which pages a passage belongs to and restate its facts.  That coupling has two
@@ -23,7 +23,7 @@ This module performs the first half on its own and persists it:
   and asset identity, the prompt/schema, the model and the understanding
   configuration - and deliberately *not* the page layout.
 
-Page organization (S7.2, ``organization.organize_sources``) consumes these
+Page organization (``organization.organize_sources``) consumes these
 checkpoints and rejoins the shared publication tail; a layered run never falls
 back to the legacy chain and never publishes a half-compiled Bundle.  The
 staged placeholder that used to fail loudly here was removed once the stage was
@@ -82,7 +82,7 @@ UNDERSTANDING_SCENE = "jonex_wiki_source_understanding"
 MAX_UNDERSTANDING_FACTS = 24
 #: Names a fact may carry (its own subjects, not navigation targets).
 MAX_UNDERSTANDING_MENTIONS = 8
-#: R2.1: one source-understanding output -- one passage read once -- may name
+#: one source-understanding output -- one passage read once -- may name
 #: Historical constants; model output is no longer restricted by target counts.
 MAX_UNDERSTANDING_TARGETS = MAX_SOURCE_LINK_TARGETS
 MAX_UNDERSTANDING_RELATIONS = MAX_SOURCE_LINK_TARGETS
@@ -700,7 +700,7 @@ def build_understanding(
             "original_names": names,
             "qualifiers": list(record.qualifiers) + notes + aliases,
             # Layer one assigns no page: a record is source understanding, and
-            # its displays are filled in by page organization (S7.2).
+            # its displays are filled in by page organization.
             "displays": [],
             "link_proposals": proposals,
             "unbound": sorted(set(record.unbound) | set(unbound)),
@@ -1093,7 +1093,7 @@ async def understand_one_passage(
 class UnderstandingStage:
     """One source-understanding stage bound to one compile's inputs.
 
-    The stage exists so the layered driver (S7.2) can submit *individual*
+    The stage exists so the layered driver can submit *individual*
     passages inside its own bounded window: the window bounds uncommitted work
     (in-flight + understood-but-not-yet-organized), while this stage's
     semaphore bounds simultaneous model calls to the same
@@ -1329,7 +1329,7 @@ async def understand_sources(
     source and organizing pages are two stages of one compilation, not two
     deployment knobs.  Ordering is the archive order, so the same inputs
     produce the same checkpoints regardless of completion order.  This
-    all-passages form is the S7.1 entry point; the layered compile drives the
+    all-passages form is the entry point; the layered compile drives the
     same stage through its bounded window (``organization.py``).
     """
     import asyncio

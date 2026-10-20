@@ -1,4 +1,4 @@
-"""目录自动触发 runner（独立 outline task，§6）。
+"""目录自动触发 runner（独立 outline task，）。
 
 编译发布后投递一个独立 outline task（``TaskRow`` kind=outline），由 executor
 的 outline 分派执行。这里只承载「是否重生成」的判定 + 复用 ``OutlineService``

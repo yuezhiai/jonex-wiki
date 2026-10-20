@@ -1,6 +1,6 @@
-"""Immutable Wiki bundle codec (lwp-arch-001 PROD).
+"""Immutable Wiki bundle codec.
 
-Extracted verbatim from ``engines/llm_wiki_plus/production.py``: source
+Extracted verbatim from ``原引擎/production.py``: source
 removal/slugs, source snapshots, the bundle file builder
 (``build_bundle_files`` / ``build_empty_bundle_files``) and the fail-closed
 previous-bundle decoder (``PreviousBundle`` / ``decode_previous_bundle``).
@@ -383,7 +383,7 @@ def iter_bundle_files(
             "summary",
         )
     }
-    # S5.1: the page-independent source contributions, derived from the very same
+    # the page-independent source contributions, derived from the very same
     # claims.  Computed before the manifest so the mirror below can describe it.
     from jonex_wiki.domain.engine.compile import source_contribution
     if source_contributions is not None:
@@ -490,7 +490,7 @@ def iter_bundle_files(
     # Cursor identity is part of the published query snapshot and is bound to
     # the immutable revision, not to the pre-publication in-memory corpus.
     corpus = corpus.model_copy(update={"revision_id": revision_id})
-    # S6.3: the links the compile model already published, audited here.  This
+    # the links the compile model already published, audited here. This
     # layer never invents a link and never upgrades one: a published
     # supported_relation keeps its kind only if its evidence is really in the
     # stored contributions, and every downgrade is recorded in the payload.
@@ -710,7 +710,7 @@ def iter_bundle_files(
     )
     yield ("claims.jsonl", claims_lines.encode("utf-8"))
     yield ("claim_audit.json", _canonical_bytes(claim_audit))
-    # S5.1: writing the record set here puts it under the container's checksum
+    # writing the record set here puts it under the container's checksum
     # map automatically (see ``encode_bundle``).
     if shard_artifacts:
         contribution_owners = {record.record_id: "|".join(sorted({span.document_id
@@ -723,7 +723,7 @@ def iter_bundle_files(
             fields, old_contributions, {"records": contribution_owners})
     else:
         yield (source_contribution.FILE_NAME, _canonical_bytes(contribution_payload))
-    # S6.3: same container checksum map, and the navigation snapshot points at
+    # same container checksum map, and the navigation snapshot points at
     # it so the default query tool reads the audited links, not the raw draft.
     if shard_artifacts:
         yield from partitioned(relation_increment.FILE_NAME,relation_payload,
@@ -993,7 +993,7 @@ def _decode_previous_decoded(decoded: DecodedBundle) -> PreviousBundle:
             json.loads(decoded.files["error_book.yaml"].decode("utf-8"))
         )
 
-        # S5.1/S5.2: a Bundle written before these records existed still opens -
+        # a Bundle written before these records existed still opens -
         # the set is rebuilt from the claims it already stores, with every field
         # that material cannot supply left empty and marked as rebuilt.  Nothing
         # is inferred, and no model is called.
@@ -1043,7 +1043,7 @@ def _decode_previous_decoded(decoded: DecodedBundle) -> PreviousBundle:
             and expected_claim_audit["failed_passages"]
         ):
             raise ValueError("benchmark bundle violates the claim publication gate")
-        # S1.1: support labels are frozen in a published Bundle.  A Bundle
+        # support labels are frozen in a published Bundle. A Bundle
         # compiled before the protected-atom fix carries ``support_rule``
         # ``claim-support-v1`` (or no marker at all); re-deriving its coverage
         # with the current rule legitimately changes ``degraded``/``summary``/
@@ -1396,7 +1396,7 @@ def _decode_previous_decoded(decoded: DecodedBundle) -> PreviousBundle:
             raise ValueError("lexical index claims do not match published claims")
     except (KeyError, ValueError, TypeError) as exc:
         raise ValueError("malformed previous bundle content") from exc
-    # S6.3: attach the audited links last - after every snapshot/digest check
+    # attach the audited links last - after every snapshot/digest check
     # has validated the corpus as it was published, so the delivered links never
     # alter what was verified.  Navigation only; no link is evidence.
     from jonex_wiki.domain.engine.compile.identity import build_identity_index
@@ -1412,7 +1412,7 @@ def _decode_previous_decoded(decoded: DecodedBundle) -> PreviousBundle:
                 "why_visit": record.why_visit,
                 "kind": record.kind,
             })
-        # R2.1 counters at the publication boundary (one pass per compile), so
+        # counters at the publication boundary (one pass per compile), so
         # "links grew" is attributable to navigation, supported relations or
         # unresolved targets instead of counting internal decision passes.
         from jonex_wiki.kernel.telemetry import count_work

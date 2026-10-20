@@ -1,6 +1,6 @@
 """MinerU v4 cloud API backend.
 
-迁移自 core ``parsing/mineru/cloud.py``。为 raw-only 与取消检查点增加了:
+迁移自原实现 ``parsing/mineru/cloud.py``。为 raw-only 与取消检查点增加了:
 - ``parse_raw``:只上传/轮询/下载/解压并返回原始 content_list 数组(不归一化),
   供 parse 落盘 ``content_list.json``;
 - ``cancel_check``:轮询间隔之间调用(与 dev ``MineruClient`` 的取消检查点等价);

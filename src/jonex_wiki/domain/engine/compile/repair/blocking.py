@@ -1,6 +1,6 @@
-"""Deterministic candidate blocking for AC-006 (lwp-arch-001 ALG1).
+"""Deterministic candidate blocking.
 
-Extracted verbatim from ``engines/llm_wiki_plus/algorithm1.py``: token
+Extracted verbatim from ``原引擎/algorithm1.py``: token
 scoring constants, metadata overlap ranking (``derive_page_candidates``), the
 hybrid retrieval wrapper (``derive_page_candidates_hybrid``), the bounded
 semantic-review trigger (``_semantic_review_mode``/``_high_risk_content``),

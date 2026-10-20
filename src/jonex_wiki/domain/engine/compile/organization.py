@@ -1,4 +1,4 @@
-"""Layered page organization: deterministic projection + bounded window (S7.2).
+"""Layered page organization: deterministic projection + bounded window.
 
 The layered chain separates two questions the legacy chain asked in one model
 call: *what does this source say* (``understanding.py``) and *where does it
@@ -22,7 +22,7 @@ the offered candidates; anything else - no model, an invalid answer, the cap -
 keeps the material independent and counts a pending identity decision.  Nothing
 is merged on resemblance alone.
 
-Scheduling (S7.2):
+Scheduling:
 
 * understanding runs ahead of organization inside a **bounded window** --
   in-flight plus understood-but-uncommitted passages never exceed ``2*C``, so
@@ -82,7 +82,7 @@ ORGANIZATION_RULE_VERSION = "layered-organization-v1"
 PAGE_PREFIX = "pages/"
 #: Bound on candidates taken from the existing index for one name.
 MAX_ORGANIZATION_CANDIDATES = 8
-#: Per-source-output link ceiling, same rule as the legacy chain (R2.1).
+#: Per-source-output link ceiling, same rule as the legacy chain.
 MAX_SOURCE_LINK_TARGETS = 4
 #: Reason marker recorded when a name matches several pages and the projection
 #: therefore keeps the material independent instead of merging it.
@@ -188,7 +188,7 @@ def _facts_of(record: Any) -> List[str]:
 
 
 class LayeredCompilation(BaseModel):
-    """What the layered stage produced, plus the numbers S7.3 must report."""
+    """What the layered stage produced, plus the numbers must report."""
 
     model_config = ConfigDict(extra="forbid")
 

@@ -7,7 +7,7 @@ dev 目录布局：``Layout.published`` symlink → ``compile/versions/{bundle_s
 本适配器把该布局映射成 ``kernel.ports.BundleView``：identity 里
 ``revision_id == manifest_hash == manifest.bundle_sha``；``list_entries`` 从
 ``manifest.files`` 派生；``read_bytes`` 校验 sha256；``open_sqlite`` 以只读
-immutable URI 打开。core 引擎读 ``view.manifest``（容器 manifest 形状），这里
+immutable URI 打开。引擎读 ``view.manifest``（容器 manifest 形状），这里
 在 dev revision.json/manifest.json 之上合成一个兼容 dict（fingerprints/counts）。
 """
 
@@ -108,7 +108,7 @@ class DirectoryBundleView(BundleView):
         bundle_sha = self._manifest_raw.get("bundle_sha") or self._dir.name
         self.tenant_id = self._revision_raw.get("tenant_id", tenant_id)
         self.context_id = self._revision_raw.get("kb_id", context_id)
-        # 双重身份（§7 L773）：manifest_hash 保持 dev 目录哈希（bundle_sha），
+        # 双重身份：manifest_hash 保持 dev 目录哈希（bundle_sha），
         # revision_id 用 core 内容派生身份（revision.json.revision_id = rev_*），
         # 供 decode_previous_files 校验（其内容哈希 corpus_sha256 都在
         # rev_* 之上算出，不能换成 bundle_sha）。

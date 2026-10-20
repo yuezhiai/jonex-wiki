@@ -1,8 +1,8 @@
-"""Deterministic calculation over evidence-bound operands (S3.2).
+"""Deterministic calculation over evidence-bound operands.
 
 ``table_compute`` already aggregates one table's completed read.  This module is
 the second, independent branch of the same tool: a short plan of arithmetic
-steps over operands that S3.1 bound to delivered evidence.  It is deliberately a
+steps over operands that bound to delivered evidence. It is deliberately a
 separate parameter model - a cross-table calculation is not a single-table field
 filter, and pretending otherwise is how a wrong number gets a right-looking
 program result.

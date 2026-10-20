@@ -1,6 +1,6 @@
 """Input classification and container/extension validation (compile side).
 
-迁移自 core ``parsing/routes.py``。raw-only parse 在采集前用 ``classify_input`` 决定路由,
+迁移自原实现 ``parsing/routes.py``。raw-only parse 在采集前用 ``classify_input`` 决定路由,
 compile source_prep 复用同一套扩展名常量做 direct 结构打包。
 """
 from __future__ import annotations

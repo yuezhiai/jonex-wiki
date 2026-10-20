@@ -200,7 +200,7 @@ def _normalize_plan_object(plan: Any) -> tuple[dict[str, Any] | None, str | None
     # The normalized plan is the executable plan and nothing else: a diagnostic
     # marker like ``normalized_from`` must never leak into it, because the caller
     # re-parses the result with ``TableQueryPlan.model_validate`` and the model has
-    # ``extra = 'forbid'`` (READING-REPAIR §table-plan: q114 blocked on the
+    # ``extra = 'forbid'`` (既有实现: q114 blocked on the
     # extra field ``normalized_from``).
     return parsed.model_dump(), None
 
@@ -578,7 +578,7 @@ def merge_completed_request_entries(entries: list[dict[str, Any]],
                                     request_ids: list[str]) -> dict[str, Any] | None:
     """Merge several completed requests for one table into one catalog entry.
 
-    READING-REPAIR §2: a completed request only proves *its own* read range, not
+    既有实现: a completed request only proves *its own* read range, not
     the whole question.  When the model read a table in several ranges, the
     programmatic count must run over the deduplicated union of those ranges
     instead of silently picking one request to stand for the whole question.
@@ -641,7 +641,7 @@ def merge_completed_request_entries(entries: list[dict[str, Any]],
             # them to the first value would present a grid that contains both
             # subsets while claiming one filter.  Refuse the merge so the caller
             # keeps the requests as separate ranges and the model selects the
-            # range it actually needs (READING-REPAIR §table-plan).
+            # range it actually needs (既有实现).
             if key in constraints and constraints[key] != val:
                 return None
             constraints[key] = val

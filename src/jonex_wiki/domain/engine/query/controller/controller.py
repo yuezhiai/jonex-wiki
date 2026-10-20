@@ -382,7 +382,7 @@ def controller_payload(runtime: ControllerRuntime) -> Dict[str, Any]:
     hop_baseline = set(current.evidence_ids_at_start)
     # Handles are numbered over the full delivered-material ledger (read order),
     # not over the bounded active window, so a citation never changes identity
-    # merely because its evidence left the recent window (READING-REPAIR §1).
+    # merely because its evidence left the recent window (既有实现).
     handle_by_id = {
         evidence_id: "[E{}]".format(index + 1)
         for index, evidence_id in enumerate(state.seen_evidence_order)

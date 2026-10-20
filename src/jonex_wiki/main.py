@@ -51,7 +51,7 @@ def create_app(settings=None, session_factory=None, executor=None):
         request.state.request_id = rid
         try:
             response = await call_next(request)
-        except Exception:  # noqa: BLE001 —— 异常路径也交给 FastAPI 处理器,但必须设头(spec §7.4)
+        except Exception:  # noqa: BLE001 —— 异常路径也交给 FastAPI 处理器,但必须设头(设计要求)
             raise
         response.headers["X-Request-Id"] = rid
         return response

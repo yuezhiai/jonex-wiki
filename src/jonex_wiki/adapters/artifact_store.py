@@ -278,7 +278,7 @@ class ArtifactStoreAdapter(ArtifactStore):
             if p.is_file()
         }
 
-    # ── source-understanding checkpoints (S7.1) ────────────────────────
+    # ── source-understanding checkpoints ────────────────────────
     # One small JSON document per source understanding, under this KB's own
     # directory, so tenant/kb isolation is structural rather than a convention.
     # The write is atomic: a temp file in the same directory is fsynced and

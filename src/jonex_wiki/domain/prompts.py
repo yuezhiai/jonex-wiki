@@ -293,7 +293,7 @@ _VAR_RE = re.compile(r"\{([a-zA-Z_][a-zA-Z0-9_]*)\}")
 
 
 def validate_template(prompt_key: str, template: str) -> None:
-    """spec §3.4 变量契约:未知变量/缺必填 → 422(列出非法变量)。"""
+    """设计要求 变量契约:未知变量/缺必填 → 422(列出非法变量)。"""
     if prompt_key not in VARIABLE_CONTRACT:
         raise ValidationError(f"未知 prompt_key: {prompt_key}")
     required, allowed = VARIABLE_CONTRACT[prompt_key]
@@ -318,7 +318,7 @@ def template_sha(template: str) -> str:
 @dataclass
 class ResolvedPrompt:
     source: str            # "default" | "custom"
-    version: int | None    # default 为 None(spec §3.4)
+    version: int | None    # default 为 None(设计要求)
     template_sha: str
     template: str
 

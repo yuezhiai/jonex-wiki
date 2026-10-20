@@ -1,6 +1,6 @@
-"""Evidence-state helpers for the wiki query engine (lwp-arch-001 QA-2).
+"""Evidence-state helpers for the wiki query engine.
 
-Extracted verbatim from ``engines/llm_wiki_plus/query_algorithm.py``: the
+Extracted verbatim from ``原引擎/query_algorithm.py``: the
 deterministic evidence gate and compaction helpers (``_evidence_records``,
 ``_compact_evidence_record``, ``_evidence_key``, ``_cap_evidence_diversity``,
 ``_compact_claim_for_model``), the query-state event recording bridge
@@ -288,7 +288,7 @@ def _record_query_state_event(
     ):
         updated, window = sync_evidence_window(runtime, reduced)
         # Deferred import: ``_publish_control_transition`` stays on the legacy
-        # shim (controller responsibility, split in QA-3) — resolving it at call
+        # shim (controller responsibility, split in) — resolving it at call
         # time avoids an import cycle between the evidence and controller layers.
         from jonex_wiki.domain.engine.query.algorithm import (
             _publish_control_transition as _publish,

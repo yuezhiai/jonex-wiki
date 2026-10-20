@@ -1,6 +1,6 @@
-"""AC-006 batch acceptance orchestration (lwp-arch-001 ALG1).
+"""batch acceptance orchestration.
 
-Extracted verbatim from ``engines/llm_wiki_plus/algorithm1.py``:
+Extracted verbatim from ``原引擎/algorithm1.py``:
 ``run_algorithm1_batch`` — the fail-closed passage batch compilation that
 composes candidate blocking, the compile planner, the deterministic target /
 structural / evidence gates and the bounded semantic review.  It calls only
@@ -470,7 +470,7 @@ async def run_algorithm1_batch(
 
         # Fact deltas carry no replacement page. Materialize them against the
         # selected snapshot; legacy page mutations remain explicitly supported.
-        # R2.1: the response's link proposals are counted once, per source
+        # the response's link proposals are counted once, per source
         # understanding output, before any page keeps them.
         link_titles = {p.path: p.title for p in resolved.new_pages}
         link_titles.update({path: page.index.title

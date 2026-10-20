@@ -1641,7 +1641,7 @@ def _render_cell(cell: Mapping[str, Any]) -> str:
         ("raw=<EMPTY>" if cell.get("raw_value") is None
          else "raw=" + _markdown_scalar(cell.get("raw_value"))),
     ]
-    # READING-REPAIR §5.8: null formula/cached/empty_kind are noise, not data.
+    # 既有实现: null formula/cached/empty_kind are noise, not data.
     # Only emit them when they carry semantics; 0, False, "0012", units and real
     # empty markers stay on the ``raw``/``type``/``empty_kind`` fields.
     formula = cell.get("formula")

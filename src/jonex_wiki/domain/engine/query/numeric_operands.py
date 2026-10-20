@@ -1,6 +1,6 @@
 """Numeric operands bound to evidence the run actually delivered.
 
-S3.1.  A number a model wants to compute with is only usable if it can be read
+A number a model wants to compute with is only usable if it can be read
 back from a position the run delivered: a table cell that carries its table
 identity, revision and coordinates, or a character range inside a delivered
 excerpt.  The number is parsed *from that position* - a value the model types is

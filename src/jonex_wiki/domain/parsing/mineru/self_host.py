@@ -1,6 +1,6 @@
 """MinerU self-hosted HTTP backend.
 
-迁移自 core ``parsing/mineru/self_host.py``。
+迁移自原实现 ``parsing/mineru/self_host.py``。
 """
 
 from __future__ import annotations

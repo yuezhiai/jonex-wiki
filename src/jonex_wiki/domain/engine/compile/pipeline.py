@@ -457,7 +457,7 @@ def check_passage_failure_rate(
     claim_policy: object = "production",
     total: int = 0,
 ) -> None:
-    """Shared passage-failure gate (S7.2): legacy chain and layered chain.
+    """Shared passage-failure gate: legacy chain and layered chain.
 
     A rate above the cap fails closed in ``benchmark`` mode with the same
     machine-readable cause contract, and merely warns otherwise: the sources

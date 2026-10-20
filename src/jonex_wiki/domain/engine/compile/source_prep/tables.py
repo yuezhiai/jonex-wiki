@@ -1,6 +1,6 @@
 """HTML table grid expansion follows explicit spans; never guesses geometry.
 
-迁移自 core ``parsing/tables.py``(verbatim)。
+迁移自原实现 ``parsing/tables.py``(verbatim)。
 """
 from html.parser import HTMLParser
 

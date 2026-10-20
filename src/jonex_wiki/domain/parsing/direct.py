@@ -1,6 +1,6 @@
 """Deterministic format validation for the raw-only parse stage.
 
-迁移自 core ``parsing/direct.py``。raw-only 下 parse 只负责「原样拿到」原文,
+迁移自原实现 ``parsing/direct.py``。raw-only 下 parse 只负责「原样拿到」原文,
 因此这里只保留文件读取/编码嗅探 ``_read_text``(替代 dev 的 ``decode_chain``);
 结构打包(``pack_text`` / ``blocks_from_direct_text``)已迁到 compile 的
 ``source_prep/direct_ingest.py``,二进制容器冲突校验由

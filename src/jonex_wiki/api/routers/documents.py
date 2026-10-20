@@ -54,7 +54,7 @@ async def upload_document(kb_id: str, request: Request, file: UploadFile,
 
     async with sf() as s:
         repo = DocumentRepo()
-        # 文档数硬闸(spec §4.1/§7.3)
+        # 文档数硬闸(设计要求)
         if await repo.count_active(s, tenant_id, kb_id) >= settings.compile_max_documents:
             raise ValidationError(f"该知识库文档数已达上限 {settings.compile_max_documents}")
         # 去重:同 kb 同名未删文档已存在 → 409
@@ -82,14 +82,14 @@ async def upload_document(kb_id: str, request: Request, file: UploadFile,
 @router.delete("/documents/{document_id}", status_code=202)
 async def delete_document(kb_id: str, document_id: str, request: Request,
                           tenant_id: str = Depends(require_tenant)):
-    """spec §7.2/§7.3:逻辑删除 + 自动触发编译(合并触发);删除豁免成本闸门。"""
+    """设计要求:逻辑删除 + 自动触发编译(合并触发);删除豁免成本闸门。"""
     return await request.app.state.app.remove_document(tenant_id, kb_id, document_id)
 
 
 @router.post("/documents/{document_id}/reparse", status_code=202)
 async def reparse_document(kb_id: str, document_id: str, request: Request,
                            tenant_id: str = Depends(require_tenant)):
-    """spec §4.6:重新解析原上传文件;代次切换在解析成功之后(parse runner 内保证)。"""
+    """设计要求:重新解析原上传文件;代次切换在解析成功之后(parse runner 内保证)。"""
     return await request.app.state.app.reparse_document(tenant_id, kb_id, document_id)
 
 

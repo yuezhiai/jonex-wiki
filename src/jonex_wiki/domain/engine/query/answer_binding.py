@@ -1,4 +1,4 @@
-"""R1.2: the smallest answer-evidence binding the run can verify by program.
+"""the smallest answer-evidence binding the run can verify by program.
 
 An ``[E#]`` handle only says a span was delivered; it does not say the span
 supports the sentence that cites it.  This module adds a bounded, structured

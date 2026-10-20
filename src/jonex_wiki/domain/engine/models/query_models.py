@@ -1,6 +1,6 @@
-"""Query-facing DTOs used by the retrieval engine (lwp-arch-001 QA-1).
+"""Query-facing DTOs used by the retrieval engine.
 
-Extracted verbatim from ``engines/llm_wiki_plus/query_algorithm.py`` so the
+Extracted verbatim from ``原引擎/query_algorithm.py`` so the
 retrieval module can be split out without an import cycle.  The old import
 path stays available through the re-export shim; public field names and
 validation semantics are unchanged.
@@ -190,7 +190,7 @@ class QueryCorpus(BaseModel):
     page_index: Dict[str, PageIndexEntry]
     page_text: Dict[str, str]
     claims: Dict[str, List[ValidatedClaim]] = Field(default_factory=dict)
-    # S6.3: the audited links published for each page (target, reason, kind).
+    # the audited links published for each page (target, reason, kind).
     # Navigation only - a delivered link is never evidence.
     fact_mentions: Dict[str, List[str]] = Field(default_factory=dict, exclude=True)
     page_links: Dict[str, List[Dict[str, Any]]] = Field(default_factory=dict, exclude=True)
@@ -213,7 +213,7 @@ class QueryCorpus(BaseModel):
     # serialized key would invalidate every already-published bundle.
     evidence_fallback: Dict[str, List[str]] = Field(
         default_factory=dict, exclude=True)
-    # LWP-RET-002 long-document routing (per-query runtime axis, never part of
+    # long-document routing (per-query runtime axis, never part of
     # effective-config).  All four fields are optional with defaults so every
     # existing QueryCorpus construction is unchanged; the route layer sets them
     # from ``query_orchestration.run_query`` after ``build_query_corpus``.
@@ -222,7 +222,7 @@ class QueryCorpus(BaseModel):
     # "summary"); the traversal controller reads it to make retrieval route
     # aware without touching ``query_algorithm`` / ``contracts``.
     route: Optional[str] = None
-    # D-5: page_number derived query-side from ``source_metadata`` as an
+    # page_number derived query-side from ``source_metadata`` as an
     # independent map (PageIndexEntry stays frozen).  wiki path → page number.
     page_number_map: Dict[str, int] = Field(default_factory=dict)
     # Raw-source fallback (P0): an injected on-demand single-segment reader

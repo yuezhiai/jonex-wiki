@@ -1,4 +1,4 @@
-"""网关调用计量(§10 结构化日志遥测)。
+"""网关调用计量(结构化日志遥测)。
 
 分工与 compile_task 里的既有约定一致:**逐调用明细进结构化日志,任务级汇总进
 tasks.summary**。前者用来做"延迟 vs 输出 token"的散点(判断延迟是被输出字数主导
@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 
 
 #: 调用结果三态。`degraded` 单独一档而不并入 `failed`——rerank 返回 None 是
-#: §9 明文规定的降级(BM25-only / 保留原序),把它记成失败会让告警噪音盖掉真正的故障。
+#: 明文规定的降级(BM25-only / 保留原序),把它记成失败会让告警噪音盖掉真正的故障。
 OK, DEGRADED, FAILED = "ok", "degraded", "failed"
 
 
@@ -53,7 +53,7 @@ class MeteredGw:
 
     鸭子类型转发,所以真实 `GwClient` 与测试里的 fakes 都能被包。
 
-    **聚合键就是 `scene`**:六个调用点各有独立 scene(见 ARCHITECTURE §8.2),
+    **聚合键就是 `scene`**:六个调用点各有独立 scene(见 架构说明),
     一对一,不需要再叠一层本地标签。曾经有过一个 `stage` 参数,那是为了在
     分配与页面编辑共用 `jonex_compile` 时把两者分开;scene 拆开之后它就只剩
     重复(`…page_edit/page_edit`)和契约负担(每个 gw 实现都得接受该 kwarg),已移除。

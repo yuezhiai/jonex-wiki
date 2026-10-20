@@ -15,7 +15,7 @@ class PutPromptBody(BaseModel):
 
 
 def _require_public(prompt_key: str) -> None:
-    """§12：API 只暴露第一层（对外可改）；内部冻结 key 不进 API。"""
+    """API 只暴露第一层（对外可改）；内部冻结 key 不进 API。"""
     if prompt_key not in PUBLIC_PROMPT_KEYS:
         raise ValidationError(f"未知 prompt_key: {prompt_key}")
 

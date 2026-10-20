@@ -58,7 +58,7 @@ class Layout:
             path.unlink(missing_ok=True)
 
     def checkpoint_dir(self, tenant_id: str, kb_id: str, namespace: str) -> Path:
-        """Per-KB checkpoint root (S7.1): tenant/kb are part of the path, so
+        """Per-KB checkpoint root: tenant/kb are part of the path, so
         one KB can never read another's source understanding."""
         if not _SAFE_NAMESPACE.match(namespace or ""):
             raise ValueError(f"unsafe checkpoint namespace: {namespace!r}")
@@ -105,7 +105,7 @@ class Layout:
         return Path(os.path.realpath(link))
 
     def atomic_write(self, path: Path, content: bytes) -> None:
-        """临时文件 + os.replace 原子写(spec §3.2)。"""
+        """临时文件 + os.replace 原子写(设计要求)。"""
         path.parent.mkdir(parents=True, exist_ok=True)
         fd, tmp = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
         try:
@@ -117,7 +117,7 @@ class Layout:
             raise
 
     def publish_bundle(self, tenant_id: str, kb_id: str, task_id: str, bundle_sha: str) -> None:
-        """spec §5.5 步骤 4-5:staging→versions(os.replace)+ symlink 切换(单步原子)。"""
+        """设计要求 步骤 4-5:staging→versions(os.replace)+ symlink 切换(单步原子)。"""
         compile_dir = self.kb_dir(tenant_id, kb_id) / "compile"
         versions = compile_dir / "versions"
         versions.mkdir(parents=True, exist_ok=True)

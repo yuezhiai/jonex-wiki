@@ -24,7 +24,7 @@ Frozen behaviour fixed here:
 
 The module is pure with respect to the environment: only ``ModelPort`` is
 called.  No provider, network, filesystem, storage or database access happens
-here.  CR-TRACE-002 adds a real wall-clock measurement for span timing
+here. adds a real wall-clock measurement for span timing
 (``time.monotonic`` / ``datetime``) — the only environment access is the
 system clock, used solely to emit truthful ``started_at``/``duration_ms``
 span fields; never randomness, UUIDs, or secrets.
@@ -191,12 +191,12 @@ from jonex_wiki.domain.engine.query.traversal_evidence import (
 from jonex_wiki.domain.engine.query.retrieval import (DIVERSITY_RERANK_ALPHA, FTS5_UNAVAILABLE, LLM_RERANK_KEEP, LLM_RERANK_POOL, MAX_SEARCH_HITS, MAX_SEARCH_HITS_ENV, PASSAGE_MAX_CHARS, QUERY_DECOMPOSE_MULTIHOP_ENV, QUERY_DIVERSITY_RERANK_ENV, QUERY_LLM_RERANK_ENV, QUERY_SNIPPET_ENV, _COMPOSITE_COMPARATIVES, _COMPOSITE_CONJUNCTIONS, _COMPOSITE_QUESTION_WORDS, _MULTIHOP_ENTITY_OF, _QUERY_STOPWORDS, _TOKEN_RE, _build_fts_index, _claim_hits, _diversity_rerank, _diversity_rerank_enabled, _env_int, _fts_query, _fts_search, _hit_tokens, _is_composite_question, _is_multihop_single_question, _llm_rerank, _llm_rerank_enabled, _make_snippet, _max_search_hits, _multihop_decomposition_enabled, _open_fts_index, _passage_hits, _rerank_messages, _rewrite_query_for_search, _search_terms, _snippet_enabled, _split_passages, build_fts_index_bytes, build_query_corpus)
 
 # ──────────────────────────────────────────────
-#  Legacy patchable surface (lwp-arch-001 QA-1)
+# Legacy patchable surface
 # ──────────────────────────────────────────────
 # These knobs stay defined on this module so pre-split tests that patch them
 # through ``query_algorithm`` keep working; the moved retrieval module reads
 # them back through call-time accessors.
-# Legacy WAVE5_EMB_CACHE knob removed (§15); fixed default directory.
+# Legacy WAVE5_EMB_CACHE knob removed; fixed default directory.
 LLM_RERANK_MIN_CANDIDATES = 6
 
 # Stable checksum over the query tool surface; feeds EffectiveRuntimeSnapshot.
@@ -1207,7 +1207,7 @@ def _gap_correction_message(candidates: Sequence[str]) -> str:
 
 def _gap_correction(state: Dict[str, Any], trace: List[TraceEntry], budgeted_model: Any,
                     candidates: Sequence[str], *, reason: str) -> bool:
-    """The single bounded gap correction allowed per run (R1.2).
+    """The single bounded gap correction allowed per run.
 
     Returns ``True`` when the caller must continue the loop with one
     gap-directed turn.  Exactly one correction is ever granted: the second gap
@@ -1411,7 +1411,7 @@ class QueryRunResult(BaseModel):
     stop_reason: str
     failure_class: Optional[FailureClass] = None
     trace: List[TraceEntry] = Field(default_factory=list)
-    # CR-TRACE-002: real span records and aggregated provider token usage.
+    # real span records and aggregated provider token usage.
     spans: List[TraceSpan] = Field(default_factory=list)
     token_usage: Dict[str, int] = Field(default_factory=dict)
     # Frozen runtime config that actually governed this run (not the declared
@@ -1677,7 +1677,7 @@ async def run_query_algorithm(
         # bounded refusal, plus the trusted table labels keyed by table_id.
         "incomplete_facts": [],
         "table_labels_by_id": {},
-        # READING-REPAIR §3: the actual source/table ranges delivered this run.
+        # 既有实现: the actual source/table ranges delivered this run.
         "read_views": [],
     }
 

@@ -110,7 +110,7 @@ class ModelPort(ABC):
           the configured retry budget.
 
         ``scene`` labels the logical call site for per-scene metering (one
-        scene per engine call point, see ARCHITECTURE §8.3).  ``None`` (default)
+        scene per engine call point, see 架构说明). ``None`` (default)
         means "use the implementation's default scene".
 
         ``thinking`` optionally overrides the gateway's scene-level thinking
@@ -290,7 +290,7 @@ class ArtifactStore(ABC):
         """
         raise NotImplementedError
 
-    # ── source-understanding checkpoints (S7.1) ───────────────────────
+    # ── source-understanding checkpoints ───────────────────────
     # One immutable checkpoint per source understanding, keyed by the
     # understanding cache identity.  Deliberately optional (a store that never
     # runs layered compilation need not implement it) but never emulated by a

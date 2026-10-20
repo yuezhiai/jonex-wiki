@@ -65,7 +65,7 @@ class PromptTemplateRow(Base):
 
 
 class QueryTaskRow(Base):
-    """独立查询任务表(§6.4):高频只读、生命周期不同,不复用 tasks。
+    """独立查询任务表:高频只读、生命周期不同,不复用 tasks。
 
     query_id 固定前缀 ``qry-``(GET /tasks/{id} 按前缀路由,杜绝跨类型撞 id)。
     """

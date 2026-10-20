@@ -1,5 +1,5 @@
 class DomainError(Exception):
-    """统一领域错误;.code 映射到 §7.4 错误 envelope 的稳定错误码。"""
+    """统一领域错误;.code 映射到 错误 envelope 的稳定错误码。"""
 
     def __init__(self, code: str, message: str, http_status: int = 500):
         super().__init__(message)

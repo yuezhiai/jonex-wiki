@@ -1,4 +1,4 @@
-"""core 引擎 compile 分支接线（§6.3）。
+"""引擎 compile 分支接线。
 
 旧 dev 的 allocator/page_compiler/gates/incremental/indexes 编译管线整体替换为
 ``LLMWikiV1Engine.compile``：manifest + ports → 引擎 → 空产出守卫 → 发布 → summary。
@@ -147,7 +147,7 @@ def create_compile_runner(session_factory, settings, layout: Layout, gw, executo
         publication_parent = await store.published_revision_id(tenant_id, kb_id)
         recorder = RuntimeTelemetryRecorder()
 
-        # 3) core 引擎编译（context_id = kb_id）；运行时旋钮经 Settings 注入
+        # 3) 引擎编译（context_id = kb_id）；运行时旋钮经 Settings 注入
         with runtime_environment(settings.runtime_env()), bind_runtime_telemetry(recorder):
             artifacts, staging_key = await engine.compile(
                 kb_id, tenant_id, manifest,
@@ -177,7 +177,7 @@ def create_compile_runner(session_factory, settings, layout: Layout, gw, executo
         if prev_pages and artifacts.page_count < prev_pages * (1.0 - threshold):
             # 页面骤降闸门只防「源数增加却页面骤降」的质量事故。两类页面骤降是预期/正常，
             # 不应拦：
-            # - 源数下降 = 删除文档，页面随之下降（§6.5 删除豁免）。
+            # - 源数下降 = 删除文档，页面随之下降（删除豁免）。
             # - 源数不变 = 纯重编译/reparse，页面波动来自 LLM 非确定性与解析粒度差异，
             #   非「源丢失」（本次 5 → 2 即属此类）。
             prev_sources = _published_source_count(layout, tenant_id, kb_id)
@@ -223,7 +223,7 @@ def create_compile_runner(session_factory, settings, layout: Layout, gw, executo
                 except OSError:
                     log.exception("bundle retention cleanup failed kb=%s", kb_id)
 
-        # 5.5) 发布后投递独立 outline task（§6）：目录起草 LLM 可达几十秒，同步等会
+        # 5.5) 发布后投递独立 outline task：目录起草 LLM 可达几十秒，同步等会
         # 占编译并发槽 + 拖长编译时长；独立 task 让编译时长不变、失败可单独重试。
         if executor is not None and not reused_unchanged:
             async with session_factory() as s:

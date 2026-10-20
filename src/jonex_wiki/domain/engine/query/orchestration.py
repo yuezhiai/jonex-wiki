@@ -1,6 +1,6 @@
-"""Production query orchestration (lwp-arch-001 PROD).
+"""Production query orchestration.
 
-Extracted verbatim from ``engines/llm_wiki_plus/production.py``: the strict
+Extracted verbatim from ``原引擎/production.py``: the strict
 production query runner (``run_query``) and bundle text inspector
 (``inspect_bundle``).  Calls only the injected ``ModelPort`` plus the query
 core; never touches the network, a clock, a database or object storage.  The
@@ -42,7 +42,7 @@ async def run_query(
 ) -> QueryRunResult:
     """Build the query corpus and run the enforced strict traversal.
 
-    LWP-RET-002: ``route`` is the per-query long-document routing override
+    ``route`` is the per-query long-document routing override
     (default ``None`` = auto).  An explicit override may also arrive through the
     routing dict under ``_route_override`` (following the ``_published_*`` pop
     precedent); otherwise the question is classified deterministically by
@@ -62,7 +62,7 @@ async def run_query(
         corpus = prepared_corpus.model_copy(deep=False)
     lexical_index = routing.pop("_published_lexical_index", None)
     frozen_indexes = lexical_index is not None or routing.get("bundle_view") is not None
-    # LWP-RET-002: engine-side query-intent classification (zero API/DB
+    # engine-side query-intent classification (zero API/DB
     # changes, nothing persisted).  Explicit override flows through the routing
     # dict pop (the same pop precedent as ``_published_lexical_index`` above)
     # or the ``route`` argument; the default derives from the question via the
@@ -71,7 +71,7 @@ async def run_query(
     if route is None:
         route = route_override
     resolved_route = resolve_route(question, route)
-    # Raw-source fallback axis (P0 #1): an injected on-demand single-segment
+    # Raw-source fallback axis: an injected on-demand single-segment
     # reader plus an explicit mode ("off" default | "production" | "matched").
     # Nothing here re-injects the source archive into the corpus.
     raw_fallback_mode = routing.pop("_raw_fallback_mode", "off")
@@ -87,7 +87,7 @@ async def run_query(
     from jonex_wiki.domain.engine.query.algorithm import run_query_algorithm
 
     result = await run_query_algorithm(model, corpus, question, strategy, cancel=cancel, **routing)
-    # LWP-RET-002 post-processing: route goes into run.config/trace (D-7),
+    # post-processing: route goes into run.config/trace,
     # never effective-config.  Proposition/auto adds no trace event, keeping
     # the default-stack trace byte-identical to the pre-route hybrid.
     result.config["route"] = resolved_route.value

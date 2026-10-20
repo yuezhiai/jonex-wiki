@@ -1,4 +1,4 @@
-"""统一 stdlib logging + JSON formatter(§10 结构化日志;全仓不混用两套日志体系)。"""
+"""统一 stdlib logging + JSON formatter(结构化日志;全仓不混用两套日志体系)。"""
 
 import json
 import logging

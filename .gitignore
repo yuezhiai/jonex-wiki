@@ -17,3 +17,13 @@ htmlcov/
 dist/
 build/
 .task*
+
+# Internal documents and artifacts (never commit)
+docs/**
+!docs/assets/
+!docs/assets/**
+*standard.md
+dev-guide.*
+README_GITHUB.md
+Reference/**/docs/
+CLAUDE.md

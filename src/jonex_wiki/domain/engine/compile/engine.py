@@ -651,7 +651,7 @@ class LLMWikiV1Engine:
         # declared nothing", and the library baselines in ``pipeline`` apply
         # (serial, stream).  Two copies of one default is how they drift.
         curation_cfg = manifest.get("curation") or {}
-        # Physical batching removed (§14 de-batching): every passage issues its
+        # Physical batching removed (de-batching): every passage issues its
         # own complete() call so scene → call-site stays one-to-one.
         claim_policy = pipeline.resolve_claim_policy(manifest)
         raw_concurrency = curation_cfg.get("compile_concurrency")

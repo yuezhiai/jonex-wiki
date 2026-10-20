@@ -6,7 +6,7 @@ from jonex_wiki.kernel.ports import CancelPort
 
 
 class CancelPortAdapter(CancelPort):
-    """把 spec §8 的 task 级取消信号映射成 engine 的同步轮询接口。
+    """把 设计要求 的 task 级取消信号映射成 engine 的同步轮询接口。
 
     ``executor.check_cancel`` 在标志位置位时抛 ``asyncio.CancelledError``，
     ``raise_if_cancelled`` 原样冒泡；``is_cancelled`` 只读标志不做副作用。

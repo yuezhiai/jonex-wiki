@@ -49,7 +49,7 @@ def _write_artifacts(layout: Layout, tenant_id: str, kb_id: str, document_id: st
 
 
 def create_parse_runner(session_factory, settings, layout: Layout, mineru, executor=None):
-    """spec §4.6 编排。关键约束:
+    """设计要求 编排。关键约束:
     - 解析期间不持 DB session(MinerU 轮询可达 1800s,长持 session 会打满连接池)
     - 失败原子性:首次失败 → status=failed;重解析失败 → 保持 parsed 与旧代次,只写 error
     - 取消检查点:MinerU 轮询之间(core backend 的 parse_raw 在轮询间隔调用 cancel_check)
@@ -65,7 +65,7 @@ def create_parse_runner(session_factory, settings, layout: Layout, mineru, execu
                 doc.status = "failed"          # 首次解析失败/取消 → failed
                 doc.error = error
             else:
-                doc.error = error              # 重解析失败:保持 parsed 与旧代次(spec §4.6)
+                doc.error = error              # 重解析失败:保持 parsed 与旧代次(设计要求)
             await s.commit()
 
     async def runner(row) -> None:

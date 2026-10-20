@@ -1,8 +1,8 @@
 """ManifestBuilder：Settings + resolve_prompt → engine manifest（含 prompt_shas）。
 
 engine manifest 是编译的输入配置（checksum/models/curation/prompt_shas）。这里把 dev
-Settings 与可覆盖的 prompt 模板收敛成 core 引擎消费的形状。48-key 收敛的完整清单见
-方案 §10；本阶段先覆盖 dev 三个可覆盖 prompt 键与 engine 消费的 curation 字段。
+Settings 与可覆盖的 prompt 模板收敛成 引擎消费的形状。48-key 收敛的完整清单见
+设计；本阶段先覆盖 dev 三个可覆盖 prompt 键与 engine 消费的 curation 字段。
 """
 
 from __future__ import annotations

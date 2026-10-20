@@ -1,4 +1,4 @@
-"""core 引擎 query 分支接线（§6.3）。
+"""引擎 query 分支接线。
 
 旧 dev 的 BundleReader/search/synthesize 同步查询替换为后台异步：
 resolve_published 锁 bundle_sha → ArtifactStoreAdapter.open_revision →
@@ -94,7 +94,7 @@ def _dump_public_trace(trace) -> list:
 
 
 def _dump_spans(spans) -> list:
-    """CR-TRACE-002 公开 span（tool/model/step/synthesis/evidence）。
+    """公开 span（tool/model/step/synthesis/evidence）。
 
     该契约本身保证 input_summary/result_summary/evidence 只含公开信息（不含 prompt、
     凭据、正文全文、CoT），event_type 是内部提示位、序列化前剥掉。

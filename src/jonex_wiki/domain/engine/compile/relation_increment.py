@@ -1,4 +1,4 @@
-"""Bounded relation and link increments (S6.2).
+"""Bounded relation and link increments.
 
 A model may propose a *mention*, a reason to visit and the evidence it saw; it
 may not name an identity.  The coordination layer here decides the canonical

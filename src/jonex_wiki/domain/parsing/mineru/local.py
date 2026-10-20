@@ -1,6 +1,6 @@
 """Local MinerU CLI backend.
 
-迁移自 core ``parsing/mineru/local.py``。
+迁移自原实现 ``parsing/mineru/local.py``。
 """
 
 from __future__ import annotations

@@ -1,6 +1,6 @@
 """一次性回填工具:扫描旧布局下已有解析产物,列出需按新 raw 布局重解析的文档清单。
 
-背景(方案 §12 / §8):raw-only 后解析产物形状变了——旧 ``gen-N/source_artifacts.jsonl``
+背景(设计):raw-only 后解析产物形状变了——旧 ``gen-N/source_artifacts.jsonl``
 新代码不吃(新代码要 ``gen-N/raw/`` 下的 content_list.json / source.txt + 带 schema 的
 manifest.json),旧布局也不吃新产物,无法半回滚。切换后存量文档须按新 raw 布局全量重解析
 (其中 MinerU 路由会真实花钱),本工具提供一次性扫描 + dry-run 清单。

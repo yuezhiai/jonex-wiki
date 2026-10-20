@@ -1,6 +1,6 @@
-"""Mutation path repair (lwp-arch-001 ALG1).
+"""Mutation path repair.
 
-Extracted verbatim from ``engines/llm_wiki_plus/algorithm1.py``: the bounded
+Extracted verbatim from ``原引擎/algorithm1.py``: the bounded
 edit-distance guard (``_path_edit_distance_at_most``) and the duplicated-path
 drift repair (``_repair_combined_response_paths``) applied at the
 response boundary before Pydantic validation.  Pure: no provider, network,

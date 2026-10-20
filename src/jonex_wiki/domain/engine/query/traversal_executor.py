@@ -1,6 +1,6 @@
-"""Traversal controller for the wiki query engine (lwp-arch-001 QA-3).
+"""Traversal controller for the wiki query engine.
 
-Extracted verbatim from ``engines/llm_wiki_plus/query_algorithm.py``: the
+Extracted verbatim from ``原引擎/query_algorithm.py``: the
 deterministic tool-execution loop (``_exec_tool``, ``_execute_read``,
 ``_validate_read_path``), message builders (``_system_message``,
 ``_user_message``, ``_answer_target_hint``, ``_decompose_messages``,
@@ -54,7 +54,7 @@ from jonex_wiki.domain.engine.models.query_models import (
 )
 from jonex_wiki.domain.engine.query.retrieval import (_SearchMaterialCache, _chapter_tree_hits, _diversity_rerank, _env_int, _hit_tokens, _llm_rerank, _make_snippet, _search_terms)
 
-# Read-through seam (lwp-arch-001 QA-3): the traversal resolves these five
+# Read-through seam: the traversal resolves these five
 # knobs through the legacy ``query_algorithm`` namespace at call time so
 # pre-split tests that ``monkeypatch.setattr(qa, <name>, ...)`` keep working
 # unchanged.  Unpatched, each resolves to the real implementation, so
@@ -236,7 +236,7 @@ MAX_DECOMPOSED_QUERIES = 8
 QUERY_ANSWER_STYLE_ENV = "QUERY_ANSWER_STYLE"
 
 # ──────────────────────────────────────────────
-#  LWP-RET-002 — long-document routing (per-query runtime axis)
+# — long-document routing (per-query runtime axis)
 # ──────────────────────────────────────────────
 # Route is read from ``corpus.route`` (set by ``query_orchestration.run_query``
 # through ``query_router.resolve_route``).  Every route-aware behaviour below is
@@ -244,7 +244,7 @@ QUERY_ANSWER_STYLE_ENV = "QUERY_ANSWER_STYLE"
 # trace byte-identical (D-1): the new trace events are emitted only on the three
 # new routes, and the raw-source fallback is inert unless explicitly enabled.
 #
-# Raw-source fallback (P0 #1): the raw passage text is read ON DEMAND as a
+# Raw-source fallback: the raw passage text is read ON DEMAND as a
 # single segment through the injected ``corpus.raw_source_reader`` keyed by
 # SourceSpan identity (source_id/document_id/chunk_id + start/end).  The whole
 # source archive is never re-injected into the corpus.  In "matched" mode the
@@ -257,7 +257,7 @@ RAW_FALLBACK_SPANS_MAX = 2
 # Reserved pseudo read-path used by the typed evidence registry when raw-source
 # handles are registered without a wiki page read (explicit, never a page).
 RAW_FALLBACK_PSEUDO_PATH = "__raw_source_fallback__"
-# Deterministic chapter-navigation budget (bounded reads, D-5).
+# Deterministic chapter-navigation budget (bounded reads,).
 CHAPTER_NAV_BUDGET = 3
 # Summary route v1 budget (D-6): deterministic bounded summary of the active
 # evidence, no RAPTOR.
@@ -269,7 +269,7 @@ CONTEXT_BUDGET_CHARS = 32 * 500
 
 
 def _route_active(corpus: QueryCorpus) -> bool:
-    """True when the run uses one of the three new LWP-RET-002 routes.
+    """True when the run uses one of the three new routes.
 
     Proposition (and unset) routes must keep the pre-route hybrid trace
     byte-identical, so every route-gated telemetry event checks this first.
@@ -330,7 +330,7 @@ def _raw_source_fallback_span(
 ) -> Dict[str, str]:
     """Code-forced raw-source read of one SourceSpan (on-demand single segment).
 
-    P0 #1: the reader returns the raw passage text keyed by the span identity;
+    the reader returns the raw passage text keyed by the span identity;
     the excerpt is char-anchored against ``raw_text[start_char:end_char]`` and
     must equal the frozen span text exactly.  Returns the six-field evidence
     handle (claim_id/passage_id/source_id/document_id/chunk_id/excerpt).
@@ -591,7 +591,7 @@ def _deterministic_summary(
 def apply_summary_route(
     result: "QueryRunResult", corpus: QueryCorpus, question: str
 ) -> "QueryRunResult":
-    """LWP-RET-002 summary route: replace the answer with the deterministic
+    """summary route: replace the answer with the deterministic
     bounded summary of the active evidence; explicit fallback lineage when the
     active evidence is empty (D-6).  The verified citation set is the v1
     projection of the active evidence; the six-field chain is preserved.
@@ -2694,7 +2694,7 @@ def _table_delivery_payload(table_payload: Mapping[str, Any],
                 "the omitted handles keep their number and stay citable")
         if not kept:
             delivered["evidence"] = []
-    # R0.1: with the handle now bound inside each structured cell, the grid's
+    # with the handle now bound inside each structured cell, the grid's
     # values and the parallel ``cell_handles`` rows only repeat what those cells
     # already say - and reading them against each other is exactly the alignment
     # work that produced wrong-handle citations.  The co-located view replaces
@@ -3019,7 +3019,7 @@ def _table_compute_selectable_ranges(
 
 def _record_table_compute_outcome(state: Dict[str, Any], args: Mapping[str, Any],
                                   result: Mapping[str, Any]) -> None:
-    """Remember what a computation reported, for the answer path (S3.3).
+    """Remember what a computation reported, for the answer path.
 
     A completed computation becomes a program result the final answer may cite;
     a refused calculation becomes a named gap, so the answer is asked for what is
@@ -3607,7 +3607,7 @@ async def _table_read_with_ledger(args: Dict[str, Any], *, table_id: str,
                                     revision_id=getattr(reader, "revision_id", None),
                                     interpretation_id=result.get("interpretation_id")):
             entry["candidate_handles"].setdefault(handle["claim_id"], handle)
-        # READING-REPAIR §2: header/label cells are registered uniformly with
+        # 既有实现: header/label cells are registered uniformly with
         # data cells, so a merged cell's anchor coordinate has a citable handle
         # that the table program can later resolve (previously the anchor cell
         # was never a data cell and therefore never produced a handle).
@@ -4149,7 +4149,7 @@ async def _read_table_request(
 
 
 # ──────────────────────────────────────────────────────────────
-#  Workbook one-shot delivery (READING-REPAIR §3)
+# Workbook one-shot delivery (既有实现)
 # ──────────────────────────────────────────────────────────────
 
 
@@ -4235,7 +4235,7 @@ def _bounded_link_delivery(model: Any, state: Dict[str, Any],
                            messages: List[Dict[str, Any]],
                            payload: Dict[str, Any],
                            links: Mapping[str, Any]) -> Optional[Dict[str, Any]]:
-    """Deliver navigation only in the room the payload budget leaves (R2.1).
+    """Deliver navigation only in the room the payload budget leaves.
 
     The body, claims and evidence echo are already inside ``payload`` and are
     never traded away for navigation.  Two bounds apply, in order:
@@ -5308,7 +5308,7 @@ async def _exec_tool(
                     material_cache = _SearchMaterialCache(corpus)
                     state["search_material_cache"] = material_cache
                 hits = _fts_search(fts, corpus, query, material_cache=material_cache)
-                # LWP-RET-002 chapter_tree route: merge deterministic
+                # chapter_tree route: merge deterministic
                 # chapter-tree navigation hits (page-number ordered) ahead of
                 # the FTS hits so structural questions surface chapter pages
                 # even when the lexical index misses.
@@ -5367,7 +5367,7 @@ async def _exec_tool(
             )
         rewritten = ""
         unread_paths: List[str] = []
-        # R1.1: search hits and fact mentions are one observation: material this
+        # search hits and fact mentions are one observation: material this
         # run can still access but has not read.  Order is preserved (hits keep
         # their ranked order, mentions follow), duplicates are dropped, and a
         # candidate never receives an evidence handle.
@@ -5383,7 +5383,7 @@ async def _exec_tool(
             state["empty_streak"] = progress["empty_streak"]
         unread_paths = progress["unread_paths"]
         if not hits:
-            # LWP-RET-002 raw-source fallback (P0 #1): an empty search degrades
+            # raw-source fallback: an empty search degrades
             # to a code-forced, on-demand read of the raw source spans of the
             # top matching claims — never the whole archive.  Matched mode fails
             # closed (strict in matched mode); production mode emits
@@ -5433,7 +5433,7 @@ async def _exec_tool(
                     "frontier_paths": [
                         hit.path for hit in hits if hit.path not in state["read_pages"]
                     ],
-                    # R1.1: one observation per accessible page, with where it
+                    # one observation per accessible page, with where it
                     # came from and whether it is still unread.
                     "observed_candidates": [
                         {"path": item["path"], "origin": item["origin"],
@@ -5697,10 +5697,10 @@ async def _exec_tool(
         for path in outcome.files:
             if not outcome.pagination.get(path, {}).get("has_more", False):
                 state["read_pages"].add(path)
-        # LWP-RET-002 route-aware read telemetry (only on the three new routes,
+        # route-aware read telemetry (only on the three new routes,
         # so the proposition/auto trace stays byte-identical to the hybrid):
         #   - chapter_page_read: page number / chapter of every read chapter
-        #     page (chapter_tree navigation, D-5);
+        # page (chapter_tree navigation,);
         #   - evidence_placement: where each newly registered evidence record
         #     landed (page + page number + identity);
         #   - evidence_crop_metrics: bounded-evidence crop with retention_ratio;
@@ -6027,10 +6027,10 @@ async def _exec_tool(
     table_indexes = [path for path in table_indexes if path in corpus.files]
     if table_indexes:
         read_payload["message"] += "\nOriginal source table contents: " + ", ".join(table_indexes)
-    # S6.3: a read shows where the page points and why, from the published link
+    # a read shows where the page points and why, from the published link
     # index.  Navigation only: nothing here enters ``evidence``, so a link
     # answers nothing until its target is read.
-    # R2.1: body and evidence are priced first; navigation rides along only
+    # body and evidence are priced first; navigation rides along only
     # while the payload budget has room, and what was left out is stated.
     link_delivery = _bounded_link_delivery(model, state, messages, read_payload, {
         path: list(getattr(corpus, "page_links", {}).get(path) or ()) for path in files})
@@ -6443,7 +6443,7 @@ async def _exec_tool(
                 event_type=QueryEventType.EVIDENCE_ADDED.value,
                 parent_id=tool_span_id,
             )
-    # LWP-RET-002 chapter_tree route: code-forced bounded navigation along the
+    # chapter_tree route: code-forced bounded navigation along the
     # render-tree chain index.md -> <dir>/index.md -> chapter pages.  Each
     # forced step is itself a tool call (bounded by CHAPTER_NAV_BUDGET per
     # step and the run tool cap), so structural questions reach chapter pages
@@ -6552,7 +6552,7 @@ CANDIDATE_LEDGER_LIMIT = 32
 def _search_progress(*, hit_paths: Sequence[str], read_pages: Any,
                      candidate_unread: Sequence[str], stall_count: int,
                      stall_sensitive: bool) -> Dict[str, Any]:
-    """The counters one search advances, as a pure decision (R1.1).
+    """The counters one search advances, as a pure decision.
 
     A search that exposed accessible-but-unread material — a lexical hit or a
     fact mention — is progress: it clears the empty streak and the sufficiency

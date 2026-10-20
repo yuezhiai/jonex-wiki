@@ -1,4 +1,4 @@
-"""LWP-RET-002 — pure engine-side query-intent routing.
+"""— pure engine-side query-intent routing.
 
 Route is a per-query *runtime* axis (run.config / trace), never part of the
 effective-config contract and never persisted.  ``resolve_route`` classifies a
@@ -26,7 +26,7 @@ from typing import Optional, Tuple
 
 
 class Route(str, Enum):
-    """The four LWP-RET-002 long-document routing intents."""
+    """The four long-document routing intents."""
 
     PROPOSITION = "proposition"
     LEXICAL = "lexical"
@@ -94,7 +94,7 @@ def _normalize_route(value: object) -> Route:
 def resolve_route(question: str, explicit: Optional[object] = None) -> Route:
     """Classify ``question`` into a ``Route``.
 
-    Precedence (LWP-RET-002):
+    Precedence:
       1. ``explicit`` — the per-query override passed through the routing
          layer (e.g. ``route="lexical"`` or the routing-dict pop);
       2. the deterministic trigger rule table;

@@ -2,7 +2,7 @@
 
 信封 → 对象转换集中在这里：GwClient 返回 ``{"content": str, ...}`` 信封，
 engine 只认解析后的 JSON 对象（``ModelPort.complete -> Dict``）。scene 与调用点
-一对一（§8.3/§14）：引擎在每个逻辑调用点显式传 ``scene``；构造时注入的
+一对一：引擎在每个逻辑调用点显式传 ``scene``；构造时注入的
 ``self._scene`` 只作兜底（``scene or self._scene``），调用点 scene 优先。
 
 三个契约在这里落地，缺一个都会让真实网关下的查询直接 500：

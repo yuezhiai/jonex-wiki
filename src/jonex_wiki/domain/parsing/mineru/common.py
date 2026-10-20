@@ -1,6 +1,6 @@
 """Shared, provider-neutral MinerU helpers.
 
-迁移自 core ``parsing/mineru/common.py``。raw-only 下额外提供
+迁移自原实现 ``parsing/mineru/common.py``。raw-only 下额外提供
 ``read_raw_content_list``:只读取原始 content_list 数组(不做归一化/打包),
 供 parse 落盘 ``content_list.json`` 使用。
 """
@@ -26,8 +26,8 @@ from jonex_wiki.kernel.runtime_env import current_env
 
 logger = logging.getLogger(__name__)
 
-# Office 全量后缀（含 legacy OLE2）。自建 MinerU（yuexi-gpu :20490 fork）的 active
-# 档位 `yuexi-default` 的 file_types **不含** `legacy_office`，legacy 三件套原样上传直接 400：
+# Office 全量后缀（含 legacy OLE2）。自建 MinerU 服务的 active
+# 档位 `默认档位` 的 file_types **不含** `legacy_office`，legacy 三件套原样上传直接 400：
 #   {"detail":"Unsupported file type: xls（legacy Office 需要 convert_office_to_pdf=true）"}
 # 故 self_host 后端对整个 Office 家族都带 multipart 字段 `convert_office_to_pdf=true`；
 # 该字段是**放行、不是强制转换**（实测 .xls / .doc 带上后 `converted_pdf_url` 仍为空 =

@@ -1,6 +1,6 @@
 """Reading-repair view construction for wiki_read / workbook delivery.
 
-Ported from ``llm_wiki_plus/engine/read_views.py`` onto the dev package
+Ported from ``原引擎/read_views.py`` onto the dev package
 layout.  It keeps the pure data model (Document/Focus/Section/ReadingView/
 ReadPlan), the source-map/digest/material-catalog loaders, workbook/table
 resolution, and the payload serialization used by the query reading context.
@@ -1152,7 +1152,7 @@ def resolve_requested_sources(
 
 
 # ──────────────────────────────────────────────────────────────
-#  Saved structure (§5.2 heading tree)
+# Saved structure (heading tree)
 # ──────────────────────────────────────────────────────────────
 
 _ATX_RE = re.compile(r"^(#{1,6})[ \t]+(.*?)[ \t]*$")
@@ -1286,7 +1286,7 @@ def build_full_then_structured_candidates(
 
 def _independent_sections(sections: Sequence[Section],
                           focuses: Sequence[Focus]) -> List[List[Tuple[int, int]]]:
-    """Independent-section candidates, refined one level at a time (§6.1 L2)."""
+    """Independent-section candidates, refined one level at a time."""
     by_id = {section.id: section for section in sections}
 
     def first_level(section: Section) -> Section:
@@ -1394,7 +1394,7 @@ def select_combination(
     per_document_candidates: Sequence[Tuple[str, List[ReadingView]]],
     preview: Preview,
 ) -> Optional[List[ReadingView]]:
-    """Layer 1-3 multi-document degradation (§6.1 multi-document selection)."""
+    """Layer 1-3 multi-document degradation (multi-document selection)."""
     order = [(source_id, list(candidates), 0)
              for source_id, candidates in per_document_candidates]
     order = [item for item in order if item[1]]
@@ -1433,7 +1433,7 @@ def select_focus_windows(
     blocks_by_source: Mapping[str, Sequence[Tuple[int, int]]],
     preview: Preview,
 ) -> ReadPlan:
-    """Layer 4: shrink around hits, preserving every focus (§6.1 layer 4)."""
+    """Layer 4: shrink around hits, preserving every focus (layer 4)."""
     block_of: Dict[Tuple[str, Tuple[int, int]], Tuple[int, int]] = {}
     for focus in focuses:
         blocks = blocks_by_source.get(focus.source_id) or []
@@ -1688,7 +1688,7 @@ def build_cursor_queue(
 
 
 def plan_next_ranges(queue: Sequence[Dict[str, Any]], preview: Preview) -> ReadPlan:
-    """Layer 5: consume the head of the pending queue (§6.1 layer 5).
+    """Layer 5: consume the head of the pending queue (layer 5).
 
     One call delivers the whole head range or a halving prefix of it, then
     returns a fresh cursor for the remaining queue.  It never walks the whole

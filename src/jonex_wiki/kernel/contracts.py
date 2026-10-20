@@ -111,7 +111,7 @@ class EngineDescriptor(BaseModel):
 class ManifestData(BaseModel):
     """Versioned, immutable configuration snapshot for a Context.
 
-    Schema mirrors the plan's default manifest (implementation-plan.md § 4).
+    Schema mirrors the default manifest shape.
     """
 
     schemaVersion: int = Field(default=1, ge=1, le=1)
@@ -288,7 +288,7 @@ class BundleProvenance(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 # ──────────────────────────────────────────────
-#  Runtime telemetry (LWP-OBS-CONTRACT-001)
+# Runtime telemetry
 # ──────────────────────────────────────────────
 
 
@@ -551,7 +551,7 @@ class QueryRequest(BaseModel):
 
 
 class TraceSpanType(str, Enum):
-    """Public span kinds carried on ``payload.trace_span`` (frozen CR-TRACE-002)."""
+    """Public span kinds carried on ``payload.trace_span`` (frozen)."""
 
     TOOL = "tool"
     MODEL = "model"

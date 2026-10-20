@@ -1,6 +1,6 @@
-"""Compile request construction (lwp-arch-001 ALG1).
+"""Compile request construction.
 
-Extracted verbatim from ``engines/llm_wiki_plus/algorithm1.py``: the bounded
+Extracted verbatim from ``原引擎/algorithm1.py``: the bounded
 two-message request builder (``_messages``) and the single structured model
 call (``_call``) used by the compile planner and batch acceptance.  The old
 import path stays available through the re-export shim.

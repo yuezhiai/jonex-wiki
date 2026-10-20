@@ -1,4 +1,4 @@
-"""Identity, candidates and the entity/topic inverted index (S6.1).
+"""Identity, candidates and the entity/topic inverted index.
 
 Two decisions that used to be one are separated here:
 

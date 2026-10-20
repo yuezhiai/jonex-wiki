@@ -1,7 +1,7 @@
 """Direct-format structural packing (compile side).
 
 raw-only parse 只落盘原文;这里按后缀做结构打包(pack_text),产出 ParseResult 供投影。
-迁移自 core ``parsing/direct.py::parse_direct``,输入从「文件路径」改为「已读原文 + 后缀」——
+迁移自原实现 ``parsing/direct.py::parse_direct``,输入从「文件路径」改为「已读原文 + 后缀」——
 文件读取/编码嗅探/sha256 属 parse 侧职责,已在 raw 落盘阶段完成。
 """
 from __future__ import annotations

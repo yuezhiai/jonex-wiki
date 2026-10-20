@@ -597,7 +597,7 @@ def reduce_control_state(
         handle_index = int(match.group(1)) - 1
         # Handles are numbered over the full delivered-material ledger (read
         # order), not the bounded active window, so a binding survives its
-        # evidence leaving the recent window (READING-REPAIR §1).  This mirrors
+        # evidence leaving the recent window (既有实现). This mirrors
         # ``_resolve_handle`` and ``controller_payload`` in controller.py.
         if handle_index >= len(state.seen_evidence_order):
             raise ValueError("CONTROL_HANDLE_UNKNOWN")
@@ -652,7 +652,7 @@ def reduce_control_state(
             raise ValueError("CONTROL_SLOT_WITHOUT_BINDING")
         # A binding is valid against the full delivered-material ledger, not
         # just the bounded active window: leaving the recent window is message
-        # compression, not source invalidation (READING-REPAIR §1).
+        # compression, not source invalidation (既有实现).
         seen_evidence_ids = set(state.seen_evidence_by_id)
         if any(
             binding.evidence_id not in seen_evidence_ids
@@ -742,7 +742,7 @@ def reduce_control_state(
             ):
                 raise ValueError("CONTROL_ANSWER_SLOT_OPEN")
             # Answer bindings are checked against the full delivered-material
-            # ledger, not the bounded active window (READING-REPAIR §1).
+            # ledger, not the bounded active window (既有实现).
             seen = set(state.seen_evidence_by_id)
             bound_ids = {
                 binding.evidence_id

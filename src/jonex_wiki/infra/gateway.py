@@ -153,7 +153,7 @@ def thinking_payload(value: str | None) -> dict | None:
 
 
 class GwClient:
-    """spec §12:所有模型调用走 llm-gateway;计量头强制注入;rerank 失败降级。"""
+    """设计要求:所有模型调用走 llm-gateway;计量头强制注入;rerank 失败降级。"""
 
     def __init__(self, settings, transport: httpx.AsyncBaseTransport | None = None,
                  backoff_schedule=(1.0, 2.0)):

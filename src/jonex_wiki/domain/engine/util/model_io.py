@@ -1,8 +1,8 @@
 """Shared model-call / trace-span / token-usage plumbing for the query engine.
 
-lwp-arch-001 INFRA-0: extracted verbatim from
-``engines/llm_wiki_plus/query_algorithm.py`` (span timing helpers
-CR-TRACE-002, token-usage aggregation, ``_model_complete`` and
+extracted verbatim from
+``原引擎/query_algorithm.py`` (span timing helpers
+, token-usage aggregation, ``_model_complete`` and
 ``_record_model_span``).  Pure with respect to the environment: only
 ``ModelPort`` is called plus the system clock for truthful span timing.
 The old import path stays available through the re-export shim.
@@ -75,7 +75,7 @@ async def _model_complete(
         raise AssertionError("unreachable model timeout loop")
 
 # ──────────────────────────────────────────────
-#  Span timing helpers (CR-TRACE-002)
+# Span timing helpers
 # ──────────────────────────────────────────────
 
 
