@@ -42,26 +42,9 @@ Jonex Wiki 是一个独立的 **LLM-Wiki** 服务：把文档解析成结构化�
 
 它不依赖特定的前端或平台，既可以作为独立 HTTP 服务运行，也可以作为一个 Python 包嵌入其他应用。日常使用通过 `jonex-wiki` CLI 完成：上传、编译、查询、查看任务和页面都不需要手写 HTTP 请求。
 
-```text
-文件 / URL
-   │
-   ▼
-统一输入路由 ──► 文本/结构化直通 ──► SourceArtifact
-   │
-   └──► MinerU（PDF / Office / 图片）──► SourceArtifact
-                                              │
-                                              ▼
-                                   分层编译（来源理解 → 页面组织 → 发布）
-                                              │
-                                              ▼
-                                   bundle / index（不可变版本）
-                                              │
-                                              ▼
-                                   查询（BM25 + 多跳遍历）
-                                              │
-                                              ▼
-                                      answer + citations
-```
+<p align="center">
+  <img src="./docs/assets/architecture-zh.webp" alt="Jonex Wiki 架构流水线" width="100%" />
+</p>
 
 ### 特性
 

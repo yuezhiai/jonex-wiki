@@ -42,26 +42,9 @@ Jonex Wiki is a standalone **LLM-Wiki** service. It parses documents into struct
 
 It does not depend on a specific frontend or platform. It can run as a standalone HTTP service or be embedded in another application as a Python package. Day-to-day usage goes through the `jonex-wiki` CLI: uploading, compiling, querying, and inspecting tasks and pages all work without writing HTTP requests by hand.
 
-```text
-Files / URLs
-   │
-   ▼
-Unified input routing ──► Text/structured passthrough ──► SourceArtifact
-   │
-   └──► MinerU (PDF / Office / images) ──► SourceArtifact
-                                                  │
-                                                  ▼
-                            Layered compilation (source understanding → page organization → publication)
-                                                  │
-                                                  ▼
-                                       bundle / index (immutable versions)
-                                                  │
-                                                  ▼
-                                    Query (BM25 + multi-hop traversal)
-                                                  │
-                                                  ▼
-                                          answer + citations
-```
+<p align="center">
+  <img src="./docs/assets/architecture.png" alt="Jonex Wiki architecture pipeline" width="100%" />
+</p>
 
 ### Features
 
